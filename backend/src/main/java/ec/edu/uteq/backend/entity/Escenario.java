@@ -29,7 +29,6 @@ public class Escenario {
     private String densidadTrafico;
 
 
-
     public Escenario() {
     }
 
@@ -100,7 +99,5 @@ public class Escenario {
     public void setDensidadTrafico(String densidadTrafico) {
         this.densidadTrafico = densidadTrafico;
     }
-
-
 
 }
