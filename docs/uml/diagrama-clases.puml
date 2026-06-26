@@ -1,0 +1,90 @@
+@startuml
+title Diagrama de Clases - Backend SBVIA
+
+package "entity" {
+  class Rol {
+    - Long id
+    - String nombre
+    - String descripcion
+  }
+
+  class Usuario {
+    - Long id
+    - String nombre
+    - String apellido
+    - String email
+    - String password
+    - String estado
+    - LocalDateTime fechaRegistro
+  }
+
+  class Escenario {
+    - Long id
+    - String nombre
+    - String descripcion
+    - String tipoVia
+    - Integer nivelDificultad
+    - String clima
+    - String densidadTrafico
+  }
+
+  class Simulacion {
+    - Long id
+    - LocalDateTime fechaInicio
+    - LocalDateTime fechaFin
+    - String estado
+    - BigDecimal puntajeFinal
+  }
+}
+
+package "dto" {
+  class LoginRequest
+  class RegisterRequest
+  class AuthResponse
+  class EscenarioRequest
+  class EscenarioResponse
+}
+
+package "repository" {
+  interface UsuarioRepository
+  interface RolRepository
+  interface EscenarioRepository
+  interface SimulacionRepository
+}
+
+package "service" {
+  class AuthService
+  class JwtService
+  class EscenarioService
+}
+
+package "controller" {
+  class AuthController
+}
+
+package "security" {
+  class SecurityConfig
+  class JwtAuthenticationFilter
+  class TokenBlacklistService
+}
+
+Rol "1" --> "*" Usuario
+Usuario "1" --> "*" Simulacion
+Escenario "1" --> "*" Simulacion
+
+UsuarioRepository ..> Usuario
+RolRepository ..> Rol
+EscenarioRepository ..> Escenario
+SimulacionRepository ..> Simulacion
+
+AuthController ..> AuthService
+AuthService ..> UsuarioRepository
+AuthService ..> RolRepository
+AuthService ..> JwtService
+EscenarioService ..> EscenarioRepository
+JwtAuthenticationFilter ..> JwtService
+JwtAuthenticationFilter ..> UsuarioRepository
+JwtAuthenticationFilter ..> TokenBlacklistService
+SecurityConfig ..> JwtAuthenticationFilter
+
+@enduml

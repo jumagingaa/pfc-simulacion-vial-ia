@@ -1,0 +1,50 @@
+@startuml
+title Diagrama de Componentes - Sistema de Simulación Vial con IA
+
+package "Frontend" {
+    [Angular]
+}
+
+package "Backend Spring Boot" {
+
+    component "AuthController"
+    component "EscenarioController"
+    component "SimulacionController"
+
+    component "AuthService"
+    component "EscenarioService"
+    component "JwtService"
+
+    component "UsuarioRepository"
+    component "EscenarioRepository"
+    component "SimulacionRepository"
+
+    database "PostgreSQL"
+
+    component "Redis"
+
+    component "JWT"
+}
+
+Angular --> AuthController
+Angular --> EscenarioController
+Angular --> SimulacionController
+
+AuthController --> AuthService
+EscenarioController --> EscenarioService
+SimulacionController --> EscenarioService
+
+AuthService --> JwtService
+AuthService --> UsuarioRepository
+
+EscenarioService --> EscenarioRepository
+EscenarioService --> SimulacionRepository
+
+UsuarioRepository --> PostgreSQL
+EscenarioRepository --> PostgreSQL
+SimulacionRepository --> PostgreSQL
+
+JwtService --> JWT
+JwtService --> Redis
+
+@enduml

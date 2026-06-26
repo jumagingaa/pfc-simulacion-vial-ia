@@ -1,0 +1,30 @@
+@startuml
+title Diagrama de Secuencia - Autenticación JWT SBVIA
+
+actor Usuario
+participant "Frontend Angular" as Frontend
+participant "AuthController" as Controller
+participant "AuthService" as Service
+participant "UsuarioRepository" as Repo
+database "PostgreSQL" as DB
+participant "PasswordEncoder" as Encoder
+participant "JwtService" as Jwt
+participant "TokenBlacklistService" as Blacklist
+database "Redis" as Redis
+
+Usuario -> Frontend: 1. Ingresa email y contraseña
+Frontend -> Controller: 2. POST /api/auth/login
+Controller -> Service: 3. login(LoginRequest)
+Service -> Repo: 4. findByEmail(email)
+Repo -> DB: 5. Consultar usuario
+DB --> Repo: 6. Retorna usuario
+Repo --> Service: 7. Usuario encontrado
+Service -> Encoder: 8. Verificar contraseña BCrypt
+Encoder --> Service: 9. Contraseña válida
+Service -> Jwt: 10. Generar token JWT HS256
+Jwt --> Service: 11. Token y refresh token
+Service --> Controller: 12. AuthResponse
+Controller --> Frontend: 13. Retorna JWT
+Frontend --> Usuario: 14. Acceso al dashboard
+
+@enduml
